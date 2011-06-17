@@ -6,6 +6,17 @@ Spring 3.1 M1 release. I put this together quickly in an attempt to figure out
 why the Spring profiles are not being enabled by system properties either on
 the command line or in a Maven POM file. 
 
+**Update** It turns out that the problem is due to Maven not actually passing
+along the property as a true JVM system property. So the trick to tell Maven
+never to fork like so: 
+
+    $ mvn clean install -Dspring.profiles.active=postgresql -DforkMode=never
+
+Using the command above will allow the test to run successfully. I should
+have thought of the Maven forking but I just completely overlooked it. 
+
+Thanks, Sam! 
+
 Steps to Recreate Problem 
 -------------------------
 
