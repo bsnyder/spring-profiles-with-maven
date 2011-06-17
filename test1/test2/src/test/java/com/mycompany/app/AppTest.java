@@ -18,7 +18,11 @@ public class AppTest {
         ctx.refresh();
         
         DataSource ds = ctx.getBean(DataSource.class);
-        assertTrue(ds instanceof BasicDataSource);
+        String driverClassName = ((BasicDataSource)ds).getDriverClassName();
+        assertTrue("The PostgreSQL driver is not being loaded (" + driverClassName + ")", 
+                "org.postgresql.Driver".equals(driverClassName));
+//        assertTrue("The HSQLDB driver is not being loaded (" + driverClassName + ")", 
+//                "org.hsqldb.jdbcDriver".equals(driverClassName));
     }
     
 }

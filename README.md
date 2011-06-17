@@ -17,10 +17,10 @@ Steps to Recreate Problem
 	-------------------------------------------------------------------------------
 	Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 2.304 sec <<< FAILURE!
 	test(com.mycompany.app.AppTest)  Time elapsed: 0.354 sec  <<< ERROR!
-	org.springframework.beans.factory.NoSuchBeanDefinitionException: No unique bean of type [javax.sql.DataSource] is defined: expected single bean but found 0: 
-		at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBean(DefaultListableBeanFactory.java:269)
-		at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1088)
-		at com.mycompany.app.AppTest.test(AppTest.java:20)
+	java.lang.AssertionError: The PostgreSQL driver is not being loaded (${jdbc.driver.class})
+		at org.junit.Assert.fail(Assert.java:91)
+		at org.junit.Assert.assertTrue(Assert.java:43)
+		at com.mycompany.app.AppTest.test(AppTest.java:22)
 		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 		at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
 		at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
@@ -48,13 +48,13 @@ Steps to Recreate Problem
 		at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
 		at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
 
-Notice the exception. Even though the hsql profile is enabled via a system
+Notice the exception. Even though the postgresql profile is enabled via a system
 property that is specified in the Maven POM, the profile did not get enabled. 
 
 The same result occurs by using a system property on the command line as well.
 Try running the tests and add the following system property: 
 
-    $ mvn clean install -Dspring.profiles.active=hsql
+    $ mvn clean install -Dspring.profiles.active=postgresql
 
 The result will be the same error indicating that the profile did not load. 
 
@@ -71,4 +71,5 @@ Here is a snippet of that line:
 
 By uncommenting this line, the Spring API is used directly instead of trying
 to rely upon a system property. Once this line is uncommented, the Spring
-profile loads correctly. 
+profile loads correctly. Unfortunately this solution won't work for my 
+situation.
